@@ -27,10 +27,38 @@ body .main_container {
     display: flex;
     justify-content: center;
     align-items: center;
+    resize: both;
+    overflow: hidden;
 }
 
 body .main_container .gameboard {
-    height: 60%;
-    width: 60%;
     background-color: violet;
+    display: grid;
+    width: 35%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
 }
+
+.gameboard>div{
+    border: 1px black solid;
+    position: relative;
+}
+
+.gameboard>div::before {
+    display: table;
+    padding-bottom: 100%;
+    content: "";
+}
+
+.square{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
