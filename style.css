@@ -1,0 +1,36 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.header {
+    background-color: greenyellow;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 60px;
+    /* Solo se uso para ver como dimensionar con clic
+    resize: both;
+    overflow: auto;
+    */
+}
+
+/*------------------------ Main Container -----------------------*/
+
+body .main_container {
+    background-color: aqua;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body .main_container .gameboard {
+    height: 60%;
+    width: 60%;
+    background-color: violet;
+}
