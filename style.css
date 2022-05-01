@@ -2,27 +2,22 @@ html,
 body {
     padding: 0;
     margin: 0;
-    height: 100%;
+    overflow: auto;
 }
 
-.header {
-    background-color: greenyellow;
-    height: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 60px;
-    /* Solo se uso para ver como dimensionar con clic
+body{
+    display: grid;
+    grid-template-columns: 0.3fr 1fr;
+    grid-template-rows: 0.2fr 1fr;
     resize: both;
-    overflow: auto;
-    */
+    overflow: hidden;
+    height: 120vh;
 }
 
 /*------------------------ Main Container -----------------------*/
 
 body .main_container {
-    background-color: aqua;
+    grid-column: 2/-1;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -32,16 +27,19 @@ body .main_container {
 }
 
 body .main_container .gameboard {
-    background-color: violet;
     display: grid;
-    width: 35%;
+    width: 45%;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    grid-column: 2/-1;
+    grid-row: 2/-1;
+
+    gap: 2px;
+    background-color: black;
 
 }
 
 .gameboard>div{
-    border: 1px black solid;
     position: relative;
 }
 
@@ -60,5 +58,41 @@ body .main_container .gameboard {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: white;
 }
 
+/*------------ SIDEBAR ------------*/
+
+.header {
+    grid-column: 1/2;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 60px;
+    /* Solo se uso para ver como dimensionar con clic
+    resize: both;
+    overflow: auto;
+    */
+}
+
+.buttons_section{
+    grid-column: 1/2;
+    grid-row: 2/-1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: cadetblue;
+}
+
+/* -------- Counter section -----------*/
+.counters{
+    background-color: rgb(53, 52, 52);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
