@@ -9,7 +9,7 @@ html,
 body {
     padding: 0;
     margin: 0;
-    overflow: auto;
+    height: 100%;
 }
 
 body{
@@ -18,7 +18,7 @@ body{
     grid-template-rows: 0.2fr 1fr;
     resize: both;
     overflow: hidden;
-    height: 120vh;
+    height: 100%;
 }
 
 /*------------------------ Main Container -----------------------*/
@@ -36,14 +36,16 @@ body .main_container {
 
 body .main_container .gameboard {
     display: grid;
-    width: 45%;
+    width: 40%;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     grid-column: 2/-1;
     grid-row: 2/-1;
 
-    gap: 2px;
+    gap: 5px;
     background-color: black;
+
+
 
 }
 
@@ -89,6 +91,7 @@ body .main_container .gameboard {
     background-color: var(--background-color-header);
     color: white;
     
+    
 }
 /*End efecto Header*/
 
@@ -103,11 +106,42 @@ body .main_container .gameboard {
     background-color: var(--background-color-buttonSection);
 }
 
+.buttons_section button {
+    height: 15%;
+    width: 80%;
+    border: 2px var(--background-color-counter) solid;
+    border-radius: 15px;
+}
+
 /* -------- Counter section -----------*/
 .counters{
+    grid-column: 2/-1;
+    grid-row: 1/2;
+    padding: 5px 0;
+    
     background-color: var(--background-color-counter);
+
+    align-items: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    
+}
+
+.counters .counter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.counters .counter .counter2 {
+    border: 3px white solid;
+    border-radius: 15px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
 }
