@@ -1,3 +1,10 @@
+:root{
+    --background-color-counter: #191718;
+    --background-color-mainContainer: #0A62D0;
+    --background-color-header: #191718;
+    --background-color-buttonSection: #F3D849;
+}
+
 html,
 body {
     padding: 0;
@@ -24,6 +31,7 @@ body .main_container {
     align-items: center;
     resize: both;
     overflow: hidden;
+    background-color: var(--background-color-mainContainer);
 }
 
 body .main_container .gameboard {
@@ -58,11 +66,12 @@ body .main_container .gameboard {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: var(--background-color-mainContainer);
+    color: white;
 }
 
 /*------------ SIDEBAR ------------*/
-
+/* Efecto de Header*/
 .header {
     grid-column: 1/2;
     grid-row: 1/2;
@@ -71,12 +80,17 @@ body .main_container .gameboard {
     justify-content: center;
     align-items: center;
 
-    font-size: 60px;
+    font-size: 30px;
     /* Solo se uso para ver como dimensionar con clic
     resize: both;
     overflow: auto;
     */
+
+    background-color: var(--background-color-header);
+    color: white;
+    
 }
+/*End efecto Header*/
 
 .buttons_section{
     grid-column: 1/2;
@@ -86,13 +100,14 @@ body .main_container .gameboard {
     justify-content: center;
     align-items: center;
 
-    background-color: cadetblue;
+    background-color: var(--background-color-buttonSection);
 }
 
 /* -------- Counter section -----------*/
 .counters{
-    background-color: rgb(53, 52, 52);
+    background-color: var(--background-color-counter);
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
 }
