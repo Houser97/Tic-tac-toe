@@ -100,10 +100,18 @@ body .main_container .gameboard {
     border: 7px white solid;
     width: 50%;
     height: 50%;
+    background-color: transparent;
+    margin: auto;
+    left: 20%;
+    top: 20%;
 }
 
-.winner{
+.winnerX{
     color: gold;
+}
+
+.winnerO{
+    border: 7px gold solid;
 }
 
 /*------------ SIDEBAR ------------*/

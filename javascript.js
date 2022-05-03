@@ -26,15 +26,11 @@ const Players = (name, symbol)=>{
     let putXorO = (e, currentTurn) => { 
         currentTurn += 1;     
         if(symbol === '+' && e.target.classList.length <= 2){
-            e.target.classList.add('selectedX')
+            e.target.classList.add('selectedX');
             e.target.textContent='+';
         } else if(symbol === 'o' && e.target.classList.length <= 2){
-            e.target.classList.add('pivot')
-            let div = document.createElement('div');
-            div.classList.add('pivot');
-            div.classList.add('pivot1');
-            div.classList.add('selectedO');
-            e.target.appendChild(div);
+            e.target.classList.add('selectedO');
+            e.target.textContent = '';
             currentTurn = 1;
         } else {
            currentTurn -= 1;
@@ -74,80 +70,104 @@ const newGame = (currentTurn)=>{
         let divClass9 =  (gameBoard.squaresClass[8]).classList[2];
 
         let thereIsVictory = 'No';
-        
-        if((divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX')
-            || (divClass1 == 'pivot' && divClass2 == 'pivot' && divClass3 == 'pivot')){
-                (gameBoard.squaresClass[0]).classList.add('winner');
-                (gameBoard.squaresClass[1]).classList.add('winner');
-                (gameBoard.squaresClass[2]).classList.add('winner');
-            thereIsVictory = 'Yes';
+
+        if(divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX'){
+            (gameBoard.squaresClass[0]).classList.add('winnerX');
+            (gameBoard.squaresClass[1]).classList.add('winnerX');
+            (gameBoard.squaresClass[2]).classList.add('winnerX');
+        thereIsVictory = 'Yes';
 
         };
-        if((divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX')
-        || (divClass4 == 'pivot' && divClass5 == 'pivot' && divClass6 == 'pivot')){
+        if(divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX'){
+            (gameBoard.squaresClass[3]).classList.add('winnerX');
+            (gameBoard.squaresClass[4]).classList.add('winnerX');
+            (gameBoard.squaresClass[5]).classList.add('winnerX');
             thereIsVictory = 'Yes';
         }
-        if((divClass7 == 'selectedX' && divClass8 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass7 == 'pivot' && divClass8 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass7 == 'selectedX' && divClass8 == 'selectedX' && divClass9 == 'selectedX'){
+            (gameBoard.squaresClass[6]).classList.add('winnerX');
+            (gameBoard.squaresClass[7]).classList.add('winnerX');
+            (gameBoard.squaresClass[8]).classList.add('winnerX');
             thereIsVictory = 'Yes';
         }
-        if((divClass1 == 'selectedX' && divClass4 == 'selectedX' && divClass7 == 'selectedX')
-        || (divClass1 == 'pivot' && divClass4 == 'pivot' && divClass7 == 'pivot')){
+        if(divClass1 == 'selectedX' && divClass4 == 'selectedX' && divClass7 == 'selectedX'){
+            (gameBoard.squaresClass[0]).classList.add('winnerX');
+            (gameBoard.squaresClass[3]).classList.add('winnerX');
+            (gameBoard.squaresClass[6]).classList.add('winnerX');
             thereIsVictory = 'Yes';
         }
-        if((divClass2 == 'selectedX' && divClass5 == 'selectedX' && divClass8 == 'selectedX')
-        || (divClass2 == 'pivot' && divClass5 == 'pivot' && divClass8 == 'pivot')){
+        if(divClass2 == 'selectedX' && divClass5 == 'selectedX' && divClass8 == 'selectedX'){
+            (gameBoard.squaresClass[1]).classList.add('winnerX');
+            (gameBoard.squaresClass[4]).classList.add('winnerX');
+            (gameBoard.squaresClass[7]).classList.add('winnerX');
             thereIsVictory = 'Yes';
         }
-        if((divClass3 == 'selectedX' && divClass6 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass3 == 'pivot' && divClass6 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass3 == 'selectedX' && divClass6 == 'selectedX' && divClass9 == 'selectedX'){
+            (gameBoard.squaresClass[2]).classList.add('winnerX');
+            (gameBoard.squaresClass[5]).classList.add('winnerX');
+            (gameBoard.squaresClass[8]).classList.add('winnerX');
             thereIsVictory = 'Yes';
         }
-        if((divClass1 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass1 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass1 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX'){
+            (gameBoard.squaresClass[0]).classList.add('winnerX');
+            (gameBoard.squaresClass[4]).classList.add('winnerX');
+            (gameBoard.squaresClass[8]).classList.add('winnerX');
             thereIsVictory = 'Yes';
         }
-        if((divClass3 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass3 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass3 == 'selectedX' && divClass5 == 'selectedX' && divClass7 == 'selectedX'){
+            (gameBoard.squaresClass[2]).classList.add('winnerX');
+            (gameBoard.squaresClass[4]).classList.add('winnerX');
+            (gameBoard.squaresClass[6]).classList.add('winnerX');
             thereIsVictory = 'Yes';
         }
-
-
         
-                if((divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX')
-            || (divClass1 == 'pivot' && divClass2 == 'pivot' && divClass3 == 'pivot')){
-                (gameBoard.squaresClass[0]).classList.add('winner');
-                (gameBoard.squaresClass[1]).classList.add('winner');
-                (gameBoard.squaresClass[2]).classList.add('winner');
-            thereIsVictory = 'Yes';
+        if(divClass1 == 'selectedO' && divClass2 == 'selectedO' && divClass3 == 'selectedO'){
+            (gameBoard.squaresClass[0]).classList.add('winnerO');
+            (gameBoard.squaresClass[1]).classList.add('winnerO');
+            (gameBoard.squaresClass[2]).classList.add('winnerO');
+        thereIsVictory = 'Yes';
 
         };
-        if((divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX')
-        || (divClass4 == 'pivot' && divClass5 == 'pivot' && divClass6 == 'pivot')){
+        if(divClass4 == 'selectedO' && divClass5 == 'selectedO' && divClass6 == 'selectedO'){
+            (gameBoard.squaresClass[3]).classList.add('winnerO');
+            (gameBoard.squaresClass[4]).classList.add('winnerO');
+            (gameBoard.squaresClass[5]).classList.add('winnerO');
             thereIsVictory = 'Yes';
         }
-        if((divClass7 == 'selectedX' && divClass8 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass7 == 'pivot' && divClass8 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass7 == 'selectedO' && divClass8 == 'selectedO' && divClass9 == 'selectedO'){
+            (gameBoard.squaresClass[6]).classList.add('winnerO');
+            (gameBoard.squaresClass[7]).classList.add('winnerO');
+            (gameBoard.squaresClass[8]).classList.add('winnerO');
             thereIsVictory = 'Yes';
         }
-        if((divClass1 == 'selectedX' && divClass4 == 'selectedX' && divClass7 == 'selectedX')
-        || (divClass1 == 'pivot' && divClass4 == 'pivot' && divClass7 == 'pivot')){
+        if(divClass1 == 'selectedO' && divClass4 == 'selectedO' && divClass7 == 'selectedO'){
+            (gameBoard.squaresClass[0]).classList.add('winnerO');
+            (gameBoard.squaresClass[3]).classList.add('winnerO');
+            (gameBoard.squaresClass[6]).classList.add('winnerO');
             thereIsVictory = 'Yes';
         }
-        if((divClass2 == 'selectedX' && divClass5 == 'selectedX' && divClass8 == 'selectedX')
-        || (divClass2 == 'pivot' && divClass5 == 'pivot' && divClass8 == 'pivot')){
+        if(divClass2 == 'selectedO' && divClass5 == 'selectedO' && divClass8 == 'selectedO'){
+            (gameBoard.squaresClass[1]).classList.add('winnerO');
+            (gameBoard.squaresClass[4]).classList.add('winnerO');
+            (gameBoard.squaresClass[7]).classList.add('winnerO');
             thereIsVictory = 'Yes';
         }
-        if((divClass3 == 'selectedX' && divClass6 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass3 == 'pivot' && divClass6 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass3 == 'selectedO' && divClass6 == 'selectedO' && divClass9 == 'selectedO'){
+            (gameBoard.squaresClass[2]).classList.add('winnerO');
+            (gameBoard.squaresClass[5]).classList.add('winnerO');
+            (gameBoard.squaresClass[8]).classList.add('winnerO');
             thereIsVictory = 'Yes';
         }
-        if((divClass1 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass1 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass1 == 'selectedO' && divClass5 == 'selectedO' && divClass9 == 'selectedO'){
+            (gameBoard.squaresClass[0]).classList.add('winnerO');
+            (gameBoard.squaresClass[4]).classList.add('winnerO');
+            (gameBoard.squaresClass[8]).classList.add('winnerO');
             thereIsVictory = 'Yes';
         }
-        if((divClass3 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
-        || (divClass3 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+        if(divClass3 == 'selectedO' && divClass5 == 'selectedO' && divClass7 == 'selectedO'){
+            (gameBoard.squaresClass[2]).classList.add('winnerO');
+            (gameBoard.squaresClass[4]).classList.add('winnerO');
+            (gameBoard.squaresClass[6]).classList.add('winnerO');
             thereIsVictory = 'Yes';
         }
 
