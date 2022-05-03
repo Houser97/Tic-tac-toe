@@ -24,8 +24,9 @@ const Players = (name, symbol)=>{
                     e.target.classList.add('selectedX')
                     e.target.textContent='+';
                 } else if(symbol === 'o' && e.target.classList.length < 3){
-                    e.target.classList.add('selectedO')
-                    e.target.textContent='o';
+                    let div = document.createElement('div');
+                    div.classList.add('selectedO')
+                    e.target.appendChild(div)
                 }
         };
     return {putXorO};

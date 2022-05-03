@@ -82,8 +82,10 @@ body .main_container .gameboard {
 }
 
 .selectedO{
-    transform: rotate(45deg);
-    
+    border-radius: 50%;
+    border: 4px white solid;
+    width: 50%;
+    height: 50%;
 }
 
 /*------------ SIDEBAR ------------*/
