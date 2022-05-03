@@ -14,10 +14,10 @@ body {
 
 body{
     display: grid;
-    grid-template-columns: 0.3fr 1fr;
-    grid-template-rows: 0.2fr 1fr;
-    resize: both;
-    overflow: hidden;
+    grid-template-columns: 0.2fr 1fr;
+    grid-template-rows: 0.4fr 2fr;
+    /*resize: both;
+    overflow: hidden;*/
     height: 100%;
 }
 
@@ -32,6 +32,7 @@ body .main_container {
     resize: both;
     overflow: hidden;
     background-color: var(--background-color-mainContainer);
+    padding: 0px 0;
 }
 
 body .main_container .gameboard {
@@ -41,7 +42,6 @@ body .main_container .gameboard {
     grid-template-rows: repeat(3, 1fr);
     grid-column: 2/-1;
     grid-row: 2/-1;
-
     gap: 5px;
     background-color: black;
 }
@@ -70,7 +70,7 @@ body .main_container .gameboard {
     align-items: center;
     background-color: transparent;
     color: white;
-    font-size: 120px;
+    font-size: 200px;
     z-index: 1;
 }
 
@@ -97,7 +97,7 @@ body .main_container .gameboard {
 
 .selectedO{
     border-radius: 50%;
-    border: 5px white solid;
+    border: 7px white solid;
     width: 50%;
     height: 50%;
 }
@@ -116,13 +116,13 @@ body .main_container .gameboard {
     justify-content: center;
     align-items: center;
 
-    font-size: 30px;
+    font-size: 40px;
     /* Solo se uso para ver como dimensionar con clic
     resize: both;
     overflow: auto;
     */
 
-    background-color: var(--background-color-header);
+    background-color: black;
     color: white;
     
     
@@ -138,6 +138,7 @@ body .main_container .gameboard {
     align-items: center;
 
     background-color: var(--background-color-buttonSection);
+
 }
 
 .buttons_section button {
@@ -145,13 +146,14 @@ body .main_container .gameboard {
     width: 80%;
     border: 2px var(--background-color-counter) solid;
     border-radius: 15px;
+    font-size: 40px;
 }
 
 /* -------- Counter section -----------*/
 .counters{
     grid-column: 2/-1;
     grid-row: 1/2;
-    padding: 5px 0;
+    padding: 2px 0;
     
     background-color: var(--background-color-counter);
 
@@ -164,18 +166,61 @@ body .main_container .gameboard {
     
 }
 
-.counters .counter{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
 
-.counters .counter .counter2 {
-    border: 3px white solid;
-    border-radius: 15px;
-    height: 40px;
+.counter {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 50%;
+    background-color: transparent;
+    gap: 30px;
+}
+
+.counter .name_counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.counter2 {
+    display: flex;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background-color: #191718;
+    align-items: center;
+}
+
+.counters .versus{
+    font-size: 80px;
+}
+
+.counter_number{
+    display: flex;
+    justify-content: center;
+    font-size: 36px;
+}
+
+.symbol {
+    transform: rotate(45deg);
+    background-color: transparent;
+    font-size: 100px;
+    height: 60%;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle_counter {
+    border: 3px white solid;
+    border-radius: 50%;
+    height: 70%;
+    width: 70%;
+    
+}
+
+.counter .name {
+    font-size: 26px;
 }
