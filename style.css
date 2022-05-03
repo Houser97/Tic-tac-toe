@@ -51,6 +51,7 @@ body .main_container .gameboard {
 
 .gameboard>div{
     position: relative;
+    background-color: #0A62D0;
 }
 
 .gameboard>div::before {
@@ -68,14 +69,21 @@ body .main_container .gameboard {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--background-color-mainContainer);
+    background-color: transparent;
     color: white;
+    font-size: 100px;
 }
 
 
 
-.selected{
-    background-color: #F3D849;
+.selectedX{
+    transform: rotate(45deg);
+    
+}
+
+.selectedO{
+    transform: rotate(45deg);
+    
 }
 
 /*------------ SIDEBAR ------------*/
