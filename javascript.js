@@ -1,4 +1,7 @@
 function startGame() {
+    let popUp = document.querySelector('.popUpWinner');
+    
+    popUp.classList.add('popUpWinner_open');
     return Game = newGame(1);
 };
 

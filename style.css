@@ -114,6 +114,31 @@ body .main_container .gameboard {
     border: 7px gold solid;
 }
 
+/* POP UP winner */
+
+.popUpWinner{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    visibility: hidden;
+    background-color: #191718;
+    z-index: 1;
+    transform: scale(0.005);
+    transition: transform 0.4s;
+}
+
+.popUpWinner_open{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    visibility: visible;
+    display: flex;
+    background-color: #0ad074;
+    z-index: 1;
+    transform: scale(1);
+}
+
 /*------------ SIDEBAR ------------*/
 /* Efecto de Header*/
 .header {
