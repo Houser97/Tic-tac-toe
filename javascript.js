@@ -10,7 +10,11 @@ const gameBoard = ((doc) => {
     }
 
     squaresClass.forEach(square => square.addEventListener('click', (e)=>{
-        Game.playerToPlay(e);
+        thereIsVictory=Game.victory();
+        if(thereIsVictory == 'No'){
+            Game.playerToPlay(e);
+        } 
+        thereIsVictory=Game.victory();
     })
     );
 
@@ -22,7 +26,6 @@ const Players = (name, symbol)=>{
     let putXorO = (e, currentTurn) => { 
         currentTurn += 1;     
         if(symbol === '+' && e.target.classList.length <= 2){
-            e.target.classList.add('pivot')
             e.target.classList.add('selectedX')
             e.target.textContent='+';
         } else if(symbol === 'o' && e.target.classList.length <= 2){
@@ -56,7 +59,101 @@ const newGame = (currentTurn)=>{
             currentTurn = player2.putXorO(e, currentTurn);
         } 
     };
-    return {playerToPlay}
+
+    
+
+    const victory = () => {
+        let divClass1 =  (gameBoard.squaresClass[0]).classList[2];
+        let divClass2 =  (gameBoard.squaresClass[1]).classList[2];
+        let divClass3 =  (gameBoard.squaresClass[2]).classList[2];
+        let divClass4 =  (gameBoard.squaresClass[3]).classList[2];
+        let divClass5 =  (gameBoard.squaresClass[4]).classList[2];
+        let divClass6 =  (gameBoard.squaresClass[5]).classList[2];
+        let divClass7 =  (gameBoard.squaresClass[6]).classList[2];
+        let divClass8 =  (gameBoard.squaresClass[7]).classList[2];
+        let divClass9 =  (gameBoard.squaresClass[8]).classList[2];
+
+        let thereIsVictory = 'No';
+        
+        if((divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX')
+            || (divClass1 == 'pivot' && divClass2 == 'pivot' && divClass3 == 'pivot')){
+                (gameBoard.squaresClass[0]).classList.add('winner');
+                (gameBoard.squaresClass[1]).classList.add('winner');
+                (gameBoard.squaresClass[2]).classList.add('winner');
+            thereIsVictory = 'Yes';
+
+        };
+        if((divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX')
+        || (divClass4 == 'pivot' && divClass5 == 'pivot' && divClass6 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass7 == 'selectedX' && divClass8 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass7 == 'pivot' && divClass8 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass1 == 'selectedX' && divClass4 == 'selectedX' && divClass7 == 'selectedX')
+        || (divClass1 == 'pivot' && divClass4 == 'pivot' && divClass7 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass2 == 'selectedX' && divClass5 == 'selectedX' && divClass8 == 'selectedX')
+        || (divClass2 == 'pivot' && divClass5 == 'pivot' && divClass8 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass3 == 'selectedX' && divClass6 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass3 == 'pivot' && divClass6 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass1 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass1 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass3 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass3 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+
+
+        
+                if((divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX')
+            || (divClass1 == 'pivot' && divClass2 == 'pivot' && divClass3 == 'pivot')){
+                (gameBoard.squaresClass[0]).classList.add('winner');
+                (gameBoard.squaresClass[1]).classList.add('winner');
+                (gameBoard.squaresClass[2]).classList.add('winner');
+            thereIsVictory = 'Yes';
+
+        };
+        if((divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX')
+        || (divClass4 == 'pivot' && divClass5 == 'pivot' && divClass6 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass7 == 'selectedX' && divClass8 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass7 == 'pivot' && divClass8 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass1 == 'selectedX' && divClass4 == 'selectedX' && divClass7 == 'selectedX')
+        || (divClass1 == 'pivot' && divClass4 == 'pivot' && divClass7 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass2 == 'selectedX' && divClass5 == 'selectedX' && divClass8 == 'selectedX')
+        || (divClass2 == 'pivot' && divClass5 == 'pivot' && divClass8 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass3 == 'selectedX' && divClass6 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass3 == 'pivot' && divClass6 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass1 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass1 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+        if((divClass3 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX')
+        || (divClass3 == 'pivot' && divClass5 == 'pivot' && divClass9 == 'pivot')){
+            thereIsVictory = 'Yes';
+        }
+
+        return thereIsVictory;
+    };
+    return {playerToPlay, victory};
 };
 
 
