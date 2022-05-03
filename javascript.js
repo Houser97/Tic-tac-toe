@@ -19,16 +19,25 @@ const gameBoard = ((doc) => {
 })(document);
 
 const Players = (name, symbol)=>{
-    let putXorO = (e) => {      
-        if(symbol === '+' && e.target.classList.length < 3){
-                    e.target.classList.add('selectedX')
-                    e.target.textContent='+';
-                } else if(symbol === 'o' && e.target.classList.length < 3){
-                    let div = document.createElement('div');
-                    div.classList.add('selectedO')
-                    e.target.appendChild(div)
-                }
-        };
+    let putXorO = (e, currentTurn) => { 
+        currentTurn += 1;     
+        if(symbol === '+' && e.target.classList.length <= 2){
+            e.target.classList.add('pivot')
+            e.target.classList.add('selectedX')
+            e.target.textContent='+';
+        } else if(symbol === 'o' && e.target.classList.length <= 2){
+            e.target.classList.add('pivot')
+            let div = document.createElement('div');
+            div.classList.add('pivot');
+            div.classList.add('pivot1');
+            div.classList.add('selectedO');
+            e.target.appendChild(div);
+            currentTurn = 1;
+        } else {
+           currentTurn -= 1;
+        }
+        return currentTurn;
+    };
     return {putXorO};
 };
 
@@ -42,11 +51,9 @@ const newGame = (currentTurn)=>{
     const getCurrentTurn = () => currentTurn;
     const playerToPlay = (e) => {
         if(currentTurn == 1) {
-            player1.putXorO(e);
-            currentTurn += 1;
-        } else {
-            player2.putXorO(e);
-            currentTurn = 1;
+            currentTurn = player1.putXorO(e, currentTurn);
+        } else if (currentTurn == 2){
+            currentTurn = player2.putXorO(e, currentTurn);
         } 
     };
     return {playerToPlay}
