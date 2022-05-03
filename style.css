@@ -114,7 +114,7 @@ body .main_container .gameboard {
     border: 7px gold solid;
 }
 
-/* POP UP winner */
+/* ---------------------------------------------------POP UP winner */
 
 .popUpWinner{
     height: 100%;
@@ -126,6 +126,18 @@ body .main_container .gameboard {
     z-index: 1;
     transform: scale(0.005);
     transition: transform 0.4s;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+    color: white;
+    gap: 200px;
+}
+
+.winnerInfor{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .popUpWinner_open{
@@ -137,6 +149,22 @@ body .main_container .gameboard {
     background-color: #0ad074;
     z-index: 1;
     transform: scale(1);
+}
+
+.symbolWinnerO {
+    
+    height: 125px;
+    width: 125px;
+    border: 6px white solid;
+    border-radius: 50%;    
+}
+
+.newGame{
+    font-size: 60px;
+    border: 6px black solid;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #0A62D0;
 }
 
 /*------------ SIDEBAR ------------*/
