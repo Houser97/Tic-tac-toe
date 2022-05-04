@@ -159,6 +159,18 @@ body .main_container .gameboard {
     border-radius: 50%;    
 }
 
+.symbolWinnerX {
+    
+    height: 125px;
+    width: 125px;
+    transform: rotate(45deg);
+    font-size: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .newGame{
     font-size: 60px;
     border: 6px black solid;

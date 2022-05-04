@@ -1,17 +1,18 @@
-let numberOfWins = 0;
-
 function startGame() {
     return Game = newGame(1);
 };
 
 const gameBoard = ((doc) => {
     let squaresClass = [];
+    let numberOfWins = 0;
+    let numberMoves = 0;
     
     for(i=1; i<10; i++){
         squaresClass.push(doc.querySelector('.square'+i));
     }
 
     squaresClass.forEach(square => square.addEventListener('click', (e)=>{
+        numberMoves += 1;
         if(numberOfWins == 0) {    
             thereIsVictory=Game.victory();
             if(thereIsVictory == 'No'){
@@ -23,8 +24,10 @@ const gameBoard = ((doc) => {
                 Game.assignWinner();
                 numberOfWins = 1;
             }
-        } else {
-            
+        }
+        
+        if(numberMoves == 9 && thereIsVictory == 'No'){
+            Game.Draw();
         }
     })
     );
@@ -69,6 +72,11 @@ closeButton.addEventListener('click', (e)=> {
 })
 
 const newGame = (currentTurn)=>{
+    let divWinner = document.querySelector('.winnerName');
+    let popUp = document.querySelector('.popUpWinner');
+    let divWin = document.querySelector('.wins');
+    let divSymbol = document.querySelector('.symbolPlayer');
+
     const getCurrentTurn = () => currentTurn;
     const playerToPlay = (e) => {
         if(currentTurn == 1) {
@@ -79,20 +87,28 @@ const newGame = (currentTurn)=>{
     };
 
     const assignWinner = () => {
-        let divWinner = document.querySelector('.winnerName');
-        let popUp = document.querySelector('.popUpWinner');
         popUp.classList.add('popUpWinner_open');
 
         if(currentTurn==1){
             divWinner.textContent = `${player2.name}`;
+            divWin.textContent = 'wins!'
+            divSymbol.classList.add('symbolWinnerO');
             player2.increaseCounter();
         } else {
             divWinner.textContent = `${player1.name}`;
+            divWin.textContent = 'wins!'
+            divSymbol.textContent = '+';
+            divSymbol.classList.add('symbolWinnerX');
             player1.increaseCounter();
         }
 
     }
     
+    const Draw = () => {
+        popUp.classList.add('popUpWinner_open');
+        divWinner.textContent = `It's a`;
+        divWin.textContent = 'DRAW!'
+    }
 
 
     const victory = () => {
@@ -210,7 +226,7 @@ const newGame = (currentTurn)=>{
 
         return thereIsVictory;
     };
-    return {playerToPlay, victory, assignWinner};
+    return {playerToPlay, victory, assignWinner, Draw};
 };
 
 
