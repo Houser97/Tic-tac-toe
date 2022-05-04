@@ -1,4 +1,5 @@
 function startGame() {
+    document.querySelector('.playerTurn1').classList.add('effect');
     resetButton.style.display = 'flex';
     return Game = newGame();
 };
@@ -122,6 +123,8 @@ const newGame = ()=>{
     let divSymbol = document.querySelector('.symbolPlayer');
     let currentTurn = 1;
     let thereIsVictory = 'No';
+    let currentPlayer1 = document.querySelector('.playerTurn1');
+    let currentPlayer2 = document.querySelector('.playerTurn2');
  
 
     const reset = () => {
@@ -129,13 +132,19 @@ const newGame = ()=>{
         thereIsVictory = 'No';
         divSymbol.textContent='';
         divSymbol.classList.remove(divSymbol.classList[1]);
+        currentPlayer1.classList.add('effect');
+        currentPlayer2.classList.remove('effect')
     }
 
     const playerToPlay = (e) => {
         if(currentTurn == 1) {
             currentTurn = player1.putXorO(e, currentTurn);
+            currentPlayer1.classList.remove('effect');
+            currentPlayer2.classList.add('effect')
         } else if (currentTurn == 2){
             currentTurn = player2.putXorO(e, currentTurn);
+            currentPlayer1.classList.add('effect')
+            currentPlayer2.classList.remove('effect');
         } 
     };
 
