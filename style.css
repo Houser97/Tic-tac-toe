@@ -71,7 +71,7 @@ body .main_container .gameboard {
     background-color: transparent;
     color: white;
     font-size: 200px;
-    z-index: 1;
+    /*z-index: 1;*/
 }
 
 .pivot {
@@ -165,8 +165,31 @@ body .main_container .gameboard {
     padding: 10px 20px;
     border-radius: 10px;
     background-color: #0A62D0;
+    cursor: pointer;
 }
 
+.newGame:hover {
+    background-color: #3277cc;
+}
+
+.close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background-color: #191718;
+    transform: rotate(45deg);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    border: 2px white solid;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    
+}
 /*------------ SIDEBAR ------------*/
 /* Efecto de Header*/
 .header {

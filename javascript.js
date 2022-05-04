@@ -1,7 +1,6 @@
+let numberOfWins = 0;
+
 function startGame() {
-    let popUp = document.querySelector('.popUpWinner');
-    
-    popUp.classList.add('popUpWinner_open');
     return Game = newGame(1);
 };
 
@@ -13,11 +12,20 @@ const gameBoard = ((doc) => {
     }
 
     squaresClass.forEach(square => square.addEventListener('click', (e)=>{
-        thereIsVictory=Game.victory();
-        if(thereIsVictory == 'No'){
-            Game.playerToPlay(e);
-        } 
-        thereIsVictory=Game.victory();
+        if(numberOfWins == 0) {    
+            thereIsVictory=Game.victory();
+            if(thereIsVictory == 'No'){
+                Game.playerToPlay(e);
+            } 
+            thereIsVictory=Game.victory();
+
+            if(thereIsVictory == 'Yes'){
+                Game.assignWinner();
+                numberOfWins = 1;
+            }
+        } else {
+            
+        }
     })
     );
 
@@ -25,7 +33,12 @@ const gameBoard = ((doc) => {
    
 })(document);
 
-const Players = (name, symbol)=>{
+const Players = (name, symbol, numberCounter)=>{
+    let increaseCounter = () => {
+        let counter = document.querySelector(`.counter_${numberCounter}`);
+        let currentCount = parseInt(counter.textContent)+1;
+        counter.textContent = currentCount;
+    }
     let putXorO = (e, currentTurn) => { 
         currentTurn += 1;     
         if(symbol === '+' && e.target.classList.length <= 2){
@@ -40,14 +53,20 @@ const Players = (name, symbol)=>{
         }
         return currentTurn;
     };
-    return {putXorO};
+    return {putXorO, name, increaseCounter};
 };
 
-const player1 = Players('Houmser','+');
-const player2 = Players('Rommco','o');
+const player1 = Players('Houmser','+','uno');
+const player2 = Players('Rommco','o','dos');
 
 const startButton = document.querySelector('.start');
 startButton.addEventListener('click', startGame);
+
+const closeButton = document.querySelector('.close');
+closeButton.addEventListener('click', (e)=> {
+    let popUp = document.querySelector('.popUpWinner');
+    popUp.classList.remove('popUpWinner_open');
+})
 
 const newGame = (currentTurn)=>{
     const getCurrentTurn = () => currentTurn;
@@ -59,7 +78,22 @@ const newGame = (currentTurn)=>{
         } 
     };
 
+    const assignWinner = () => {
+        let divWinner = document.querySelector('.winnerName');
+        let popUp = document.querySelector('.popUpWinner');
+        popUp.classList.add('popUpWinner_open');
+
+        if(currentTurn==1){
+            divWinner.textContent = `${player2.name}`;
+            player2.increaseCounter();
+        } else {
+            divWinner.textContent = `${player1.name}`;
+            player1.increaseCounter();
+        }
+
+    }
     
+
 
     const victory = () => {
         let divClass1 =  (gameBoard.squaresClass[0]).classList[2];
@@ -176,7 +210,7 @@ const newGame = (currentTurn)=>{
 
         return thereIsVictory;
     };
-    return {playerToPlay, victory};
+    return {playerToPlay, victory, assignWinner};
 };
 
 
