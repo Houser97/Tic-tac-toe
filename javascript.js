@@ -1,4 +1,5 @@
 function startGame() {
+    resetButton.style.display = 'flex';
     return Game = newGame();
 };
 
@@ -60,6 +61,7 @@ const Players = (name, symbol, numberCounter)=>{
     const reset = () => {
         counter.textContent = 0;
     }
+
     let increaseCounter = () => {
         let counter = document.querySelector(`.counter_${numberCounter}`);
         currentCount = parseInt(counter.textContent)+1;
@@ -88,7 +90,8 @@ const player2 = Players('Rommco','o','dos');
 const startButton = document.querySelector('.start');
 startButton.addEventListener('click', startGame);
 
-const resetButton = document.querySelector('.restart');
+
+let resetButton = document.querySelector('.restart');
 resetButton.addEventListener('click', ()=> {
     gameBoard.reset();
     Game.reset();
@@ -102,6 +105,14 @@ closeButton.addEventListener('click', (e)=> {
     popUp.classList.remove('popUpWinner_open');
 })
 
+let newGameButton = document.querySelector('.newGame');
+newGameButton.addEventListener('click', ()=>{
+    gameBoard.reset();
+    Game.reset();
+    let popUp = document.querySelector('.popUpWinner');
+    popUp.classList.remove('popUpWinner_open');
+})
+
 
 
 const newGame = ()=>{
@@ -111,6 +122,7 @@ const newGame = ()=>{
     let divSymbol = document.querySelector('.symbolPlayer');
     let currentTurn = 1;
     let thereIsVictory = 'No';
+ 
 
     const reset = () => {
         currentTurn = 1;

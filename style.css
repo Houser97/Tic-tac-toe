@@ -184,6 +184,10 @@ body .main_container .gameboard {
     background-color: #3277cc;
 }
 
+.newGame:active{
+    background-color: #6593cc;
+}
+
 .close {
     position: absolute;
     top: 30px;
@@ -225,6 +229,7 @@ body .main_container .gameboard {
 }
 /*End efecto Header*/
 
+/*---------------------------------------botones*/
 .buttons_section{
     grid-column: 1/2;
     grid-row: 2/-1;
@@ -245,8 +250,19 @@ body .main_container .gameboard {
     border: 2px var(--background-color-counter) solid;
     border-radius: 15px;
     font-size: 40px;
+    cursor: pointer;
+    background-color: white;
 }
 
+.buttons_section button:active{
+    background-color: rgb(191, 192, 192);
+}
+
+.restart {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
 /* -------- Counter section -----------*/
 .counters{
     grid-column: 2/-1;
