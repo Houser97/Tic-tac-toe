@@ -1,5 +1,5 @@
 function startGame() {
-    return Game = newGame(1);
+    return Game = newGame();
 };
 
 const gameBoard = ((doc) => {
@@ -10,6 +10,20 @@ const gameBoard = ((doc) => {
     for(i=1; i<10; i++){
         squaresClass.push(doc.querySelector('.square'+i));
     }
+
+    const reset = () => {
+        squaresClass.forEach(square => square.textContent = '');
+        squaresClass.forEach(square => square.classList.remove(square.classList[3]));
+        squaresClass.forEach(square => square.classList.remove(square.classList[2]));
+                /*squaresClass.forEach(square => ()=>{
+            while(square.classList.length > 2){
+                let indexClass = square.classList.length - 1;
+                square.classList.remove(`${square.classList[indexClass]}`);
+            }
+        });*/
+        numberMoves = 0;
+        numberOfWins = 0;
+    };
 
     squaresClass.forEach(square => square.addEventListener('click', (e)=>{
         numberMoves += 1;
@@ -32,14 +46,23 @@ const gameBoard = ((doc) => {
     })
     );
 
-    return{squaresClass};
+    return{squaresClass, reset};
    
 })(document);
 
+
+
+
+
 const Players = (name, symbol, numberCounter)=>{
+    let counter = document.querySelector(`.counter_${numberCounter}`);
+    
+    const reset = () => {
+        counter.textContent = 0;
+    }
     let increaseCounter = () => {
         let counter = document.querySelector(`.counter_${numberCounter}`);
-        let currentCount = parseInt(counter.textContent)+1;
+        currentCount = parseInt(counter.textContent)+1;
         counter.textContent = currentCount;
     }
     let putXorO = (e, currentTurn) => { 
@@ -56,7 +79,7 @@ const Players = (name, symbol, numberCounter)=>{
         }
         return currentTurn;
     };
-    return {putXorO, name, increaseCounter};
+    return {putXorO, name, increaseCounter, reset};
 };
 
 const player1 = Players('Houmser','+','uno');
@@ -65,19 +88,37 @@ const player2 = Players('Rommco','o','dos');
 const startButton = document.querySelector('.start');
 startButton.addEventListener('click', startGame);
 
+const resetButton = document.querySelector('.restart');
+resetButton.addEventListener('click', ()=> {
+    gameBoard.reset();
+    Game.reset();
+    player1.reset();
+    player2.reset();
+})
+
 const closeButton = document.querySelector('.close');
 closeButton.addEventListener('click', (e)=> {
     let popUp = document.querySelector('.popUpWinner');
     popUp.classList.remove('popUpWinner_open');
 })
 
-const newGame = (currentTurn)=>{
+
+
+const newGame = ()=>{
     let divWinner = document.querySelector('.winnerName');
     let popUp = document.querySelector('.popUpWinner');
     let divWin = document.querySelector('.wins');
     let divSymbol = document.querySelector('.symbolPlayer');
+    let currentTurn = 1;
+    let thereIsVictory = 'No';
 
-    const getCurrentTurn = () => currentTurn;
+    const reset = () => {
+        currentTurn = 1;
+        thereIsVictory = 'No';
+        divSymbol.textContent='';
+        divSymbol.classList.remove(divSymbol.classList[1]);
+    }
+
     const playerToPlay = (e) => {
         if(currentTurn == 1) {
             currentTurn = player1.putXorO(e, currentTurn);
@@ -122,7 +163,6 @@ const newGame = (currentTurn)=>{
         let divClass8 =  (gameBoard.squaresClass[7]).classList[2];
         let divClass9 =  (gameBoard.squaresClass[8]).classList[2];
 
-        let thereIsVictory = 'No';
 
         if(divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX'){
             (gameBoard.squaresClass[0]).classList.add('winnerX');
@@ -226,7 +266,7 @@ const newGame = (currentTurn)=>{
 
         return thereIsVictory;
     };
-    return {playerToPlay, victory, assignWinner, Draw};
+    return {playerToPlay, victory, assignWinner, Draw, reset};
 };
 
 
