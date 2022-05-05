@@ -1,3 +1,23 @@
+let player1 = 0;
+let player2 = 0;
+
+function createPlayers(e) {
+    e.preventDefault();
+    let popUpForm = document.querySelector('.popUpForm');
+    popUpForm.style.display = 'none';
+    let player1Element = document.getElementById('namePlayer1').value;
+    let player2Element = document.getElementById('namePlayer2').value;
+    
+    player1 = Players(player1Element,'+','uno');
+    player2 = Players(player2Element,'o','dos');
+
+    let name1 = document.querySelector('.nameDisplay1');
+    name1.textContent = `${player1Element}`;
+
+    let name2 = document.querySelector('.nameDisplay2');
+    name2.textContent = `${player2Element}`;
+}
+
 function startGame() {
     document.querySelector('.playerTurn1').classList.add('effect');
     resetButton.style.display = 'flex';
@@ -85,9 +105,6 @@ const Players = (name, symbol, numberCounter)=>{
     return {putXorO, name, increaseCounter, reset};
 };
 
-const player1 = Players('Houmser','+','uno');
-const player2 = Players('Rommco','o','dos');
-
 const startButton = document.querySelector('.start');
 startButton.addEventListener('click', startGame);
 
@@ -113,6 +130,9 @@ newGameButton.addEventListener('click', ()=>{
     let popUp = document.querySelector('.popUpWinner');
     popUp.classList.remove('popUpWinner_open');
 })
+
+let Form = document.querySelector('.form');
+Form.addEventListener('submit', createPlayers);
 
 
 

@@ -29,19 +29,19 @@
                 </div>
             </div>
             <div class="popUpCenter">
-                <form action="#" method="get">
+                <form action="#" method="get" class="form">
                     <div class="inputs">
                         <div>
-                            <input type="text" id="namePlayer1" name="name1" placeholder=" " class="form_input">
+                            <input type="text" id="namePlayer1" name="name1" placeholder=" " class="form_input" required>
                             <label for="namePlayer1">Player 1 name</label>
                         </div>
                         <div>
-                            <input type="text" id="namePlayer2" name="name2" placeholder=" " class="form_input">
+                            <input type="text" id="namePlayer2" name="name2" placeholder=" " class="form_input" required>
                             <label for="namePlayer2">Player 2 name</label>
                         </div>
                     </div>
                     <div class="button_submit">
-                        <button type="submit">Begin</button>
+                        <button type="submit" class="submitPlayers">Begin</button>
                     </div>
                 </form>
             </div>
@@ -62,7 +62,7 @@
     <div class="counters">
         <div class="counter playerTurn1">
             <div class="name_counter">
-                <div class="name">Houmser</div>
+                <div class="name nameDisplay1"></div>
                 <div class="counter_uno counter_number">0</div>
             </div>
             <div class="counter2">
@@ -74,7 +74,7 @@
         </div>
         <div class="counter playerTurn2">
                 <div class="name_counter">
-                    <div class="name">Rommco</div>
+                    <div class="name nameDisplay2"></div>
                     <div class="counter_dos counter_number">0</div>
                 </div>
                 <div class="counter2">
