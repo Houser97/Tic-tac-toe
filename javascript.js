@@ -48,24 +48,37 @@ const gameBoard = ((doc) => {
     };
 
     squaresClass.forEach(square => square.addEventListener('click', (e)=>{
-        numberMoves += 1;
+        /*numberMoves += 1; quitar el que esta dentro con game ai*/
         if(numberOfWins == 0) {    
             thereIsVictory=Game.victory();
             if(thereIsVictory == 'No'){
                 /*Game.playerToPlay(e);*/
+                
                 Game.ai(e,gameBoard.squaresClass);
+                numberMoves += 1;
 
             } 
             thereIsVictory=Game.victory();
 
             if(thereIsVictory == 'Yes'){
-                Game.assignWinner();
+                /*Game.assignWinner();*/
+                Game.assignWinnerAI();
                 numberOfWins = 1;
             }
         }
-        
-        if(numberMoves == 9 && thereIsVictory == 'No'){
+        /*numberMoves == 9* en el if 
+        if(numberMoves >= 5 && thereIsVictory == 'No'){
             Game.Draw();
+        }*/ 
+        let availableSquare = [];
+        squaresClass.forEach(square => {
+            if(square.classList.length < 3){
+                availableSquare.push(square);
+            }
+        })
+        if(availableSquare.length == 0){
+            Game.Draw();
+            console.log(availableSquare);
         }
     })
     );
@@ -83,6 +96,11 @@ const Players = (name, symbol, numberCounter)=>{
     
     const reset = () => {
         counter.textContent = 0;
+        numberMoves = 0;
+    }
+
+    const resetAI = () => {
+        numberMoves = 0;
     }
 
     let increaseCounter = () => {
@@ -105,14 +123,30 @@ const Players = (name, symbol, numberCounter)=>{
         return currentTurn;
     };
 /*Nuevo*/
+let numberMoves = 0;
+let thereIsVictory = 'No';
     const playWithAi = (e, board) => {
+        let turn = 0;
+        numberMoves += 1;
         if(symbol === '+' && e.target.classList.length <= 2){
+            turn +=1;
             e.target.classList.add('selectedX');
             e.target.textContent='+';
 
+            let availableSquare = [];
+            board.forEach(square => {
+            if(square.classList.length < 3){
+                availableSquare.push(square);
+            }
+            })
+            if(availableSquare.length == 0){
+                Game.Draw();
+                console.log(availableSquare);
+             } else {
+
             thereIsVictory=Game.victory();
             if(thereIsVictory == 'No'){
-                
+                turn +=1;
                 let bestScore = -Infinity;
                 let bestMove;
 
@@ -132,16 +166,21 @@ const Players = (name, symbol, numberCounter)=>{
                             bestMove = square;
                             positionSquare = helpCounter;
                         }
+                    } else{
+                        
                     }
                 })
                 bestMove.classList.add('selectedO')
             }
+        }
             function minimax(board){
                 return 1;
             }
+            
         }
+        return turn;
     };
-    return {putXorO, name, increaseCounter, reset, playWithAi};
+    return {putXorO, name, increaseCounter, reset, playWithAi, resetAI};
 };
 
 const startButton = document.querySelector('.start');
@@ -168,6 +207,8 @@ newGameButton.addEventListener('click', ()=>{
     Game.reset();
     let popUp = document.querySelector('.popUpWinner');
     popUp.classList.remove('popUpWinner_open');
+    player1.resetAI();
+    player2.resetAI();
 })
 
 let Form = document.querySelector('.form');
@@ -210,6 +251,25 @@ const newGame = ()=>{
             currentPlayer2.classList.remove('effect');
         } 
     };
+
+    const assignWinnerAI = () => {
+        popUp.classList.add('popUpWinner_open');
+        console.log(currentTurn);
+
+        if(currentTurn%2){
+            divWinner.textContent = `${player1.name}`;
+            divWin.textContent = 'wins!'
+            divSymbol.textContent = '+';
+            divSymbol.classList.add('symbolWinnerX');
+            player1.increaseCounter();
+        } else {
+            divWinner.textContent = `${player2.name}`;
+            divWin.textContent = 'wins!'
+            divSymbol.classList.add('symbolWinnerO');
+            player2.increaseCounter();
+        }
+
+    }
 
     const assignWinner = () => {
         popUp.classList.add('popUpWinner_open');
@@ -350,7 +410,7 @@ const newGame = ()=>{
 
         return thereIsVictory;
     };
-    return {playerToPlay, victory, assignWinner, Draw, reset, ai};
+    return {playerToPlay, victory, assignWinner, Draw, reset, ai,assignWinnerAI};
 };
 
 
