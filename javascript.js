@@ -52,7 +52,9 @@ const gameBoard = ((doc) => {
         if(numberOfWins == 0) {    
             thereIsVictory=Game.victory();
             if(thereIsVictory == 'No'){
-                Game.playerToPlay(e);
+                /*Game.playerToPlay(e);*/
+                Game.ai(e,gameBoard.squaresClass);
+
             } 
             thereIsVictory=Game.victory();
 
@@ -102,7 +104,44 @@ const Players = (name, symbol, numberCounter)=>{
         }
         return currentTurn;
     };
-    return {putXorO, name, increaseCounter, reset};
+/*Nuevo*/
+    const playWithAi = (e, board) => {
+        if(symbol === '+' && e.target.classList.length <= 2){
+            e.target.classList.add('selectedX');
+            e.target.textContent='+';
+
+            thereIsVictory=Game.victory();
+            if(thereIsVictory == 'No'){
+                
+                let bestScore = -Infinity;
+                let bestMove;
+
+                let helpCounter = 0;
+                let positionSquare = 0;
+
+                board.forEach(square => {
+                    helpCounter +=1;
+                    
+                    if(square.classList.length <=2 && square.textContent == ''){
+                        square.classList.add('selectedO');
+                        let score = minimax(board);
+                        square.classList.remove('selectedO');
+
+                        if(score >= bestScore){
+                            bestScore = score;
+                            bestMove = square;
+                            positionSquare = helpCounter;
+                        }
+                    }
+                })
+                bestMove.classList.add('selectedO')
+            }
+            function minimax(board){
+                return 1;
+            }
+        }
+    };
+    return {putXorO, name, increaseCounter, reset, playWithAi};
 };
 
 const startButton = document.querySelector('.start');
@@ -154,6 +193,10 @@ const newGame = ()=>{
         divSymbol.classList.remove(divSymbol.classList[1]);
         currentPlayer1.classList.add('effect');
         currentPlayer2.classList.remove('effect')
+    }
+
+    const ai = (e,board) => {
+        currentTurn = player1.playWithAi(e, board);
     }
 
     const playerToPlay = (e) => {
@@ -209,7 +252,7 @@ const newGame = ()=>{
             (gameBoard.squaresClass[0]).classList.add('winnerX');
             (gameBoard.squaresClass[1]).classList.add('winnerX');
             (gameBoard.squaresClass[2]).classList.add('winnerX');
-        thereIsVictory = 'Yes';
+            thereIsVictory = 'Yes';
 
         };
         if(divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX'){
@@ -307,7 +350,7 @@ const newGame = ()=>{
 
         return thereIsVictory;
     };
-    return {playerToPlay, victory, assignWinner, Draw, reset};
+    return {playerToPlay, victory, assignWinner, Draw, reset, ai};
 };
 
 
