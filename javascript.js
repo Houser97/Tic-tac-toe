@@ -65,6 +65,8 @@ const gameBoard = ((doc) => {
             }
         } else{
             /* --------------------Seccion para jugar contra AI------------------*/
+            /* Seccion que llama a los metodos para hacer la jugadas y evita que se hagan
+            mas cuando hay un ganador o empate */
             if(numberOfWins == 0) {    
 
                 thereIsVictory=Game.victory();
@@ -162,7 +164,6 @@ const Players = (name, symbol, numberCounter)=>{
         return currentTurn;
     };
 /*Nuevo*/
-let contadorPosicion = -1;
 let scores = {
     winnerX: -10,
     winnerO: 10, /*AI juega con O, por eso es positivo aca*/
@@ -170,7 +171,7 @@ let scores = {
 }
 
 function minimax(depth, isMaximizing){
-    Game.victoryAI();
+    Game.victoryAI(); /* revisar cuando el minimax llegue al final de la partida*/
     
     if(winner !== null){
         console.log(scores[winner]);
@@ -184,9 +185,7 @@ function minimax(depth, isMaximizing){
                 square.classList.add('selectedO'); /*Haz jugada*/
                 let score = minimax(depth+1 ,false);
                 square.classList.remove('selectedO'); /*Limpia jugada*/
-
                 bestScore = Math.max(score,bestScore);
-                
             } 
         })
         return bestScore;
@@ -262,12 +261,8 @@ let thereIsVictory = 'No';
             }
             
         }
-        
-            /*function minimax(board){
-                return 1;
-            }*/
             
-        }
+    }
 
         return turn;
     };

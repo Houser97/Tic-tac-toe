@@ -151,6 +151,8 @@ body .main_container .gameboard {
     font-weight: 600;
 }
 
+
+
 form {
     position: relative;
     width: 450px;
@@ -191,7 +193,7 @@ form button:hover {
     gap: 30px;
 }
 
-input {
+.inputs input {
     width: 100%;
     outline: none;
     background: none;
@@ -216,7 +218,7 @@ input:focus {
     border-color: #0ad074;
 }
 
-label {
+.inputs label {
     color: white;
     position: absolute;
     left: 1rem;
@@ -227,8 +229,8 @@ label {
     transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
 }
 
-input:focus ~ label, 
-input:not(:placeholder-shown).form_input:not(:focus) ~ label{
+.inputs input:focus ~ label, 
+.inputs input:not(:placeholder-shown).form_input:not(:focus) ~ label{
     top: -15px;
     font-size: 1.2rem;
     left: 0.8rem;
@@ -267,6 +269,84 @@ input:not(:placeholder-shown).form_input:not(:focus) ~ label{
     border: 9px white solid;
     width: 150px;
     height: 150px;
+}
+
+/*----------------------------------------------------POP UP DECIDE*/
+.form{
+    display: none;
+}
+
+.form2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 70px;
+}
+
+.form2 .radio_buttons {
+    display: flex;
+    gap: 36px;
+}
+
+.form2 input[type='radio']{
+    display: none;
+}
+
+.form2 input[type='radio']:checked + .player {
+    background-color: #0A62D0;
+    border-color: #0A62D0;
+    padding: 5px 15px;
+}
+
+.form2 input[type='radio']:checked + .machine {
+    background-color: #d0910a;
+    border-color: #d0910a;
+    padding: 5px 15px;
+}
+
+.form2 input[type='radio']:checked + label::before{
+    display: none;
+}
+
+.form2 label {
+    color: white;
+    padding: 5px 10px 5px 40px;
+    display: inline-block;
+    position: relative;
+    background: transparent;
+    border: 3px white solid;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 30px;
+    transition: 0.3s ease-in;
+}
+
+.form2 label::before{
+    content:'';
+    background: transparent;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    border: 2px white solid;
+    border-radius: 50%;
+    position: absolute;
+    left: 10px;
+    top: 25%;
+}
+
+.form2 .player:hover{
+    border-color: #0A62D0;
+}
+
+.form2 .machine:hover{
+    border-color: #d0910a;
+}
+
+.decideAIorPlayer{
+    color: white;
+    font-size: 50px;
+    font-weight: 600;
 }
 /* ---------------------------------------------------POP UP winner */
 
