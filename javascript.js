@@ -1,7 +1,21 @@
 let player1 = 0;
 let player2 = 0;
-let playAI = 'NY';
+let playAI = 'No';
 let winner = null;
+
+function choosePlayer(e){
+    e.preventDefault();
+    FormDecision.style.display='none'
+    let radioButton = document.querySelector('input[type="radio"]:checked');
+    if(radioButton.id == 'machine'){
+        let player2Element = document.getElementById('namePlayer2');
+        player2Element.value= 'machine';
+        let toErase = document.querySelector('.toErase');
+        toErase.style.display='none';
+        playAI = 'Yes'
+    }
+    Form.style.display = 'flex';
+}
 
 function createPlayers(e) {
     e.preventDefault();
@@ -193,7 +207,6 @@ function minimax(depth, isMaximizing){
         let bestScore = Infinity;
         
         (gameBoard.squaresClass).forEach( square => {
-            contadorPosicion += 1;
             
             if(square.classList.length <=2 && square.textContent == ''){
                 square.classList.add('selectedX'); /*Haz jugada*/
@@ -237,11 +250,11 @@ let thereIsVictory = 'No';
                 
                 let bestScore = -10000;
                 let bestMove = 0;
-                let contadorPosicion = -1;
+            
                 
                 
                 (gameBoard.squaresClass).forEach( square => {
-                    contadorPosicion += 1;
+                    
                     
                     if(square.classList.length <=2 && square.textContent == ''){
                         square.classList.add('selectedO'); /*Haz jugada*/
@@ -651,4 +664,7 @@ newGameButton.addEventListener('click', ()=>{
 
 let Form = document.querySelector('.form');
 Form.addEventListener('submit', createPlayers);
+
+let FormDecision = document.querySelector('.form2');
+FormDecision.addEventListener('submit', choosePlayer);
 
