@@ -1,5 +1,7 @@
 let player1 = 0;
 let player2 = 0;
+let playAI = 'NY';
+let winner = null;
 
 function createPlayers(e) {
     e.preventDefault();
@@ -26,8 +28,7 @@ function startGame() {
 
 const gameBoard = ((doc) => {
     let squaresClass = [];
-    let numberOfWins = 0;
-    let numberMoves = 0;
+    let numberOfWins = 0; /*Ayuda a clavar la victoria para evitar mas jugadas*/
     
     for(i=1; i<10; i++){
         squaresClass.push(doc.querySelector('.square'+i));
@@ -37,46 +38,63 @@ const gameBoard = ((doc) => {
         squaresClass.forEach(square => square.textContent = '');
         squaresClass.forEach(square => square.classList.remove(square.classList[3]));
         squaresClass.forEach(square => square.classList.remove(square.classList[2]));
-                /*squaresClass.forEach(square => ()=>{
-            while(square.classList.length > 2){
-                let indexClass = square.classList.length - 1;
-                square.classList.remove(`${square.classList[indexClass]}`);
-            }
-        });*/
-        numberMoves = 0;
         numberOfWins = 0;
     };
 
-    squaresClass.forEach(square => square.addEventListener('click', (e)=>{
-        /*numberMoves += 1; quitar el que esta dentro con game ai*/
-        if(numberOfWins == 0) {    
-            thereIsVictory=Game.victory();
-            if(thereIsVictory == 'No'){
-                /*Game.playerToPlay(e);*/
-                
-                Game.ai(e,gameBoard.squaresClass);
-                numberMoves += 1;
+    squaresClass.forEach(square => square.addEventListener('click', (e)=>{ 
+        if(playAI == 'No'){
+            if(numberOfWins == 0) {    
 
-            } 
-            thereIsVictory=Game.victory();
+                thereIsVictory=Game.victory();
 
-            if(thereIsVictory == 'Yes'){
-                /*Game.assignWinner();*/
-                Game.assignWinnerAI();
-                numberOfWins = 1;
+                if(thereIsVictory == 'No'){
+                    Game.playerToPlay(e);
+                    /* AI
+                    Game.ai(e,gameBoard.squaresClass);
+                    */
+
+                } 
+
+                thereIsVictory=Game.victory(); /*Se vuelve a declarar */
+
+                if(thereIsVictory == 'Yes'){
+                    Game.assignWinner();
+                    /*Game.assignWinnerAI();*/
+                    numberOfWins = 1;
+                }
+            }
+        } else{
+            /* --------------------Seccion para jugar contra AI------------------*/
+            if(numberOfWins == 0) {    
+
+                thereIsVictory=Game.victory();
+
+                if(thereIsVictory == 'No'){
+                    Game.ai(e);
+                } 
+
+                thereIsVictory=Game.victory(); /*Se vuelve a declarar */
+
+                if(thereIsVictory == 'Yes'){
+                    Game.assignWinnerAI();
+                    numberOfWins = 1;
+                }
             }
         }
-        /*numberMoves == 9* en el if 
-        if(numberMoves >= 5 && thereIsVictory == 'No'){
-            Game.Draw();
-        }*/ 
+
+
+        /*Guardar espacios disponibles*/
         let availableSquare = [];
         squaresClass.forEach(square => {
             if(square.classList.length < 3){
                 availableSquare.push(square);
             }
         })
-        if(availableSquare.length == 0){
+
+        
+
+        /*Definir empate si no hay espacios y no hubo victoria*/
+        if(availableSquare.length == 0 && thereIsVictory == 'No'){
             Game.Draw();
             console.log(availableSquare);
         }
@@ -87,7 +105,16 @@ const gameBoard = ((doc) => {
    
 })(document);
 
+/*(gameBoard.squaresClass).forEach(square => {
+    square.classList.add('winnerX');
+    
+})*/
 
+/*(gameBoard.squaresClass).forEach( square => {
+    if(square.classList.length <=2 && square.textContent == ''){
+        console.log(gameBoard.squaresClass)
+    } 
+})*/
 
 
 
@@ -104,118 +131,150 @@ const Players = (name, symbol, numberCounter)=>{
     }
 
     let increaseCounter = () => {
-        let counter = document.querySelector(`.counter_${numberCounter}`);
         currentCount = parseInt(counter.textContent)+1;
         counter.textContent = currentCount;
     }
+
     let putXorO = (e, currentTurn) => { 
-        currentTurn += 1;     
+        let currentPlayer1 = document.querySelector('.playerTurn1');
+        let currentPlayer2 = document.querySelector('.playerTurn2');
+        currentTurn += 1; /*Pasa el turno en playerToPlay en objeto GAME */  
+
         if(symbol === '+' && e.target.classList.length <= 2){
             e.target.classList.add('selectedX');
             e.target.textContent='+';
+
+            /*Ilumina contador de jugador en turno*/
+            currentPlayer1.classList.remove('effect'); 
+            currentPlayer2.classList.add('effect')
+
         } else if(symbol === 'o' && e.target.classList.length <= 2){
             e.target.classList.add('selectedO');
             e.target.textContent = '';
-            currentTurn = 1;
+            currentTurn = 1; /*Se reinicia la cuenta para asignar turno.*/
+
+            /*Ilumina contador de jugador en turno*/
+            currentPlayer1.classList.add('effect')
+            currentPlayer2.classList.remove('effect');
         } else {
-           currentTurn -= 1;
+           currentTurn -= 1; /*Si hubo jugada no valida se permite al jugador volver a tirar*/
         }
         return currentTurn;
     };
 /*Nuevo*/
-let numberMoves = 0;
+let contadorPosicion = -1;
+let scores = {
+    winnerX: -10,
+    winnerO: 10, /*AI juega con O, por eso es positivo aca*/
+    tie: 0
+}
+
+function minimax(depth, isMaximizing){
+    Game.victoryAI();
+    
+    if(winner !== null){
+        console.log(scores[winner]);
+        return scores[winner];
+    } 
+
+    if(isMaximizing){
+        let bestScore = -Infinity;
+        (gameBoard.squaresClass).forEach( square => {
+            if(square.classList.length <=2 && square.textContent == ''){
+                square.classList.add('selectedO'); /*Haz jugada*/
+                let score = minimax(depth+1 ,false);
+                square.classList.remove('selectedO'); /*Limpia jugada*/
+
+                bestScore = Math.max(score,bestScore);
+                
+            } 
+        })
+        return bestScore;
+    } else {
+        let bestScore = Infinity;
+        
+        (gameBoard.squaresClass).forEach( square => {
+            contadorPosicion += 1;
+            
+            if(square.classList.length <=2 && square.textContent == ''){
+                square.classList.add('selectedX'); /*Haz jugada*/
+                let score = minimax(depth+1 ,true);
+                square.classList.remove('selectedX'); /*Limpia jugada*/
+                square.textContent = '';
+
+                bestScore = Math.min(score,bestScore);
+            } 
+            
+        })
+        
+        return bestScore;
+    }
+    
+}
+
 let thereIsVictory = 'No';
-    const playWithAi = (e, board) => {
+    const playWithAi = (e) => {
         let turn = 0;
-        numberMoves += 1;
+        
         if(symbol === '+' && e.target.classList.length <= 2){
             turn +=1;
             e.target.classList.add('selectedX');
             e.target.textContent='+';
-
+/*Se implementa empate otra vez para saber si AI no debe tirar, ya que este metodo deja que tiren los dos a la vez */
+            thereIsVictory=Game.victory();
             let availableSquare = [];
-            board.forEach(square => {
+            (gameBoard.squaresClass).forEach(square => {
             if(square.classList.length < 3){
                 availableSquare.push(square);
             }
             })
-            if(availableSquare.length == 0){
+            if(availableSquare.length == 0 && thereIsVictory == 'No'){
                 Game.Draw();
-                console.log(availableSquare);
+                console.log(availableSquare.length);
              } else {
-
-            thereIsVictory=Game.victory();
+/* Turno de AI */
+            
             if(thereIsVictory == 'No'){
-                turn +=1;
-                let bestScore = -Infinity;
-                let bestMove;
-
-                let helpCounter = 0;
-                let positionSquare = 0;
-
-                board.forEach(square => {
-                    helpCounter +=1;
+                
+                let bestScore = -10000;
+                let bestMove = 0;
+                let contadorPosicion = -1;
+                
+                
+                (gameBoard.squaresClass).forEach( square => {
+                    contadorPosicion += 1;
                     
                     if(square.classList.length <=2 && square.textContent == ''){
-                        square.classList.add('selectedO');
-                        let score = minimax(board);
-                        square.classList.remove('selectedO');
-
-                        if(score >= bestScore){
+                        square.classList.add('selectedO'); /*Haz jugada*/
+                        let score = minimax(0 ,false);
+                        square.classList.remove('selectedO'); /*Limpia jugada*/
+                        if(score > bestScore){
                             bestScore = score;
-                            bestMove = square;
-                            positionSquare = helpCounter;
+                            bestMove = square; /*Mejor jugada hallada*/
                         }
-                    } else{
-                        
-                    }
+                    } 
+                    
                 })
-                bestMove.classList.add('selectedO')
-            }
-        }
-            function minimax(board){
-                return 1;
+                console.log(bestMove);
+                console.log(bestScore);
+                bestMove.classList.add('selectedO');
+                turn +=1;
             }
             
         }
+        
+            /*function minimax(board){
+                return 1;
+            }*/
+            
+        }
+
         return turn;
     };
     return {putXorO, name, increaseCounter, reset, playWithAi, resetAI};
 };
 
-const startButton = document.querySelector('.start');
-startButton.addEventListener('click', startGame);
-
-
-let resetButton = document.querySelector('.restart');
-resetButton.addEventListener('click', ()=> {
-    gameBoard.reset();
-    Game.reset();
-    player1.reset();
-    player2.reset();
-})
-
-const closeButton = document.querySelector('.close');
-closeButton.addEventListener('click', (e)=> {
-    let popUp = document.querySelector('.popUpWinner');
-    popUp.classList.remove('popUpWinner_open');
-})
-
-let newGameButton = document.querySelector('.newGame');
-newGameButton.addEventListener('click', ()=>{
-    gameBoard.reset();
-    Game.reset();
-    let popUp = document.querySelector('.popUpWinner');
-    popUp.classList.remove('popUpWinner_open');
-    player1.resetAI();
-    player2.resetAI();
-})
-
-let Form = document.querySelector('.form');
-Form.addEventListener('submit', createPlayers);
-
-
-
+/* Objeto de juego */
 const newGame = ()=>{
     let divWinner = document.querySelector('.winnerName');
     let popUp = document.querySelector('.popUpWinner');
@@ -236,19 +295,15 @@ const newGame = ()=>{
         currentPlayer2.classList.remove('effect')
     }
 
-    const ai = (e,board) => {
-        currentTurn = player1.playWithAi(e, board);
+    const ai = (e) => {
+        currentTurn = player1.playWithAi(e);
     }
 
     const playerToPlay = (e) => {
         if(currentTurn == 1) {
             currentTurn = player1.putXorO(e, currentTurn);
-            currentPlayer1.classList.remove('effect');
-            currentPlayer2.classList.add('effect')
         } else if (currentTurn == 2){
             currentTurn = player2.putXorO(e, currentTurn);
-            currentPlayer1.classList.add('effect')
-            currentPlayer2.classList.remove('effect');
         } 
     };
 
@@ -295,7 +350,6 @@ const newGame = ()=>{
         divWin.textContent = 'DRAW!'
     }
 
-
     const victory = () => {
         let divClass1 =  (gameBoard.squaresClass[0]).classList[2];
         let divClass2 =  (gameBoard.squaresClass[1]).classList[2];
@@ -306,13 +360,40 @@ const newGame = ()=>{
         let divClass7 =  (gameBoard.squaresClass[6]).classList[2];
         let divClass8 =  (gameBoard.squaresClass[7]).classList[2];
         let divClass9 =  (gameBoard.squaresClass[8]).classList[2];
+        let boardClassesArray = [[divClass1,divClass2,divClass3],
+                                 [divClass4,divClass5,divClass6],
+                                 [divClass7,divClass8,divClass9]]
+        let winnerX = 'winnerX';
+        let winnerO = 'winnerO';
 
+/*
+        for(i=0; i<=2; i ++){
+            
+            if(boardClassesArray[0][0]=='selectedX' || boardClassesArray[0][0]=='selectedO'){
+                if(boardClassesArray[i][0]==boardClassesArray[i][1] && boardClassesArray[i][1]==boardClassesArray[i][2]){
+                    winner = boardClassesArray[i][0];
+                    thereIsVictory = 'Yes';
+                    if(boardClassesArray[i][0]=='selectedX'){
+                        (gameBoard.squaresClass[0]).classList.add('winnerX');
+                        (gameBoard.squaresClass[1]).classList.add('winnerX');
+                        (gameBoard.squaresClass[2]).classList.add('winnerX');
+                    } else{
+                        (gameBoard.squaresClass[3]).classList.add('winnerO');
+                        (gameBoard.squaresClass[4]).classList.add('winnerO');
+                        (gameBoard.squaresClass[5]).classList.add('winnerO');
+                    }
+                    break;
+                }
+            }
+            
+        }*/
 
         if(divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX'){
             (gameBoard.squaresClass[0]).classList.add('winnerX');
             (gameBoard.squaresClass[1]).classList.add('winnerX');
             (gameBoard.squaresClass[2]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
 
         };
         if(divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX'){
@@ -320,49 +401,57 @@ const newGame = ()=>{
             (gameBoard.squaresClass[4]).classList.add('winnerX');
             (gameBoard.squaresClass[5]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
         }
         if(divClass7 == 'selectedX' && divClass8 == 'selectedX' && divClass9 == 'selectedX'){
             (gameBoard.squaresClass[6]).classList.add('winnerX');
             (gameBoard.squaresClass[7]).classList.add('winnerX');
             (gameBoard.squaresClass[8]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
         }
         if(divClass1 == 'selectedX' && divClass4 == 'selectedX' && divClass7 == 'selectedX'){
             (gameBoard.squaresClass[0]).classList.add('winnerX');
             (gameBoard.squaresClass[3]).classList.add('winnerX');
             (gameBoard.squaresClass[6]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
         }
         if(divClass2 == 'selectedX' && divClass5 == 'selectedX' && divClass8 == 'selectedX'){
             (gameBoard.squaresClass[1]).classList.add('winnerX');
             (gameBoard.squaresClass[4]).classList.add('winnerX');
             (gameBoard.squaresClass[7]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
         }
         if(divClass3 == 'selectedX' && divClass6 == 'selectedX' && divClass9 == 'selectedX'){
             (gameBoard.squaresClass[2]).classList.add('winnerX');
             (gameBoard.squaresClass[5]).classList.add('winnerX');
             (gameBoard.squaresClass[8]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
         }
         if(divClass1 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX'){
             (gameBoard.squaresClass[0]).classList.add('winnerX');
             (gameBoard.squaresClass[4]).classList.add('winnerX');
             (gameBoard.squaresClass[8]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
         }
         if(divClass3 == 'selectedX' && divClass5 == 'selectedX' && divClass7 == 'selectedX'){
             (gameBoard.squaresClass[2]).classList.add('winnerX');
             (gameBoard.squaresClass[4]).classList.add('winnerX');
             (gameBoard.squaresClass[6]).classList.add('winnerX');
             thereIsVictory = 'Yes';
+            winner = 'winnerX';
         }
         
         if(divClass1 == 'selectedO' && divClass2 == 'selectedO' && divClass3 == 'selectedO'){
             (gameBoard.squaresClass[0]).classList.add('winnerO');
             (gameBoard.squaresClass[1]).classList.add('winnerO');
             (gameBoard.squaresClass[2]).classList.add('winnerO');
-        thereIsVictory = 'Yes';
+            thereIsVictory = 'Yes';
+            winner = 'winnerO';
 
         };
         if(divClass4 == 'selectedO' && divClass5 == 'selectedO' && divClass6 == 'selectedO'){
@@ -370,47 +459,201 @@ const newGame = ()=>{
             (gameBoard.squaresClass[4]).classList.add('winnerO');
             (gameBoard.squaresClass[5]).classList.add('winnerO');
             thereIsVictory = 'Yes';
+            winner = 'winnerO';
         }
         if(divClass7 == 'selectedO' && divClass8 == 'selectedO' && divClass9 == 'selectedO'){
             (gameBoard.squaresClass[6]).classList.add('winnerO');
             (gameBoard.squaresClass[7]).classList.add('winnerO');
             (gameBoard.squaresClass[8]).classList.add('winnerO');
             thereIsVictory = 'Yes';
+            winner = 'winnerO';
         }
         if(divClass1 == 'selectedO' && divClass4 == 'selectedO' && divClass7 == 'selectedO'){
             (gameBoard.squaresClass[0]).classList.add('winnerO');
             (gameBoard.squaresClass[3]).classList.add('winnerO');
             (gameBoard.squaresClass[6]).classList.add('winnerO');
             thereIsVictory = 'Yes';
+            winner = 'winnerO';
         }
         if(divClass2 == 'selectedO' && divClass5 == 'selectedO' && divClass8 == 'selectedO'){
             (gameBoard.squaresClass[1]).classList.add('winnerO');
             (gameBoard.squaresClass[4]).classList.add('winnerO');
             (gameBoard.squaresClass[7]).classList.add('winnerO');
             thereIsVictory = 'Yes';
+            winner = 'winnerO';
         }
         if(divClass3 == 'selectedO' && divClass6 == 'selectedO' && divClass9 == 'selectedO'){
             (gameBoard.squaresClass[2]).classList.add('winnerO');
             (gameBoard.squaresClass[5]).classList.add('winnerO');
             (gameBoard.squaresClass[8]).classList.add('winnerO');
             thereIsVictory = 'Yes';
+            winner = 'winnerO';
         }
         if(divClass1 == 'selectedO' && divClass5 == 'selectedO' && divClass9 == 'selectedO'){
             (gameBoard.squaresClass[0]).classList.add('winnerO');
             (gameBoard.squaresClass[4]).classList.add('winnerO');
             (gameBoard.squaresClass[8]).classList.add('winnerO');
             thereIsVictory = 'Yes';
+            winner = 'winnerO';
         }
         if(divClass3 == 'selectedO' && divClass5 == 'selectedO' && divClass7 == 'selectedO'){
             (gameBoard.squaresClass[2]).classList.add('winnerO');
             (gameBoard.squaresClass[4]).classList.add('winnerO');
             (gameBoard.squaresClass[6]).classList.add('winnerO');
             thereIsVictory = 'Yes';
+            winner = 'winnerO';
         }
+        
+            /*Guardar espacios disponibles*/
+            let availableSquare = [];
+            gameBoard.squaresClass.forEach(square => {
+                if(square.classList.length < 3){
+                    availableSquare.push(square);
+                }
+            })
+    
+            /*Definir empate si no hay espacios ni ganador para minimax AI*/
+            if(availableSquare.length == 0 && winner==null){
+                winner = 'tie';
+            }
+
 
         return thereIsVictory;
     };
-    return {playerToPlay, victory, assignWinner, Draw, reset, ai,assignWinnerAI};
+
+    const victoryAI = () => {
+        let divClass1 =  (gameBoard.squaresClass[0]).classList[2];
+        let divClass2 =  (gameBoard.squaresClass[1]).classList[2];
+        let divClass3 =  (gameBoard.squaresClass[2]).classList[2];
+        let divClass4 =  (gameBoard.squaresClass[3]).classList[2];
+        let divClass5 =  (gameBoard.squaresClass[4]).classList[2];
+        let divClass6 =  (gameBoard.squaresClass[5]).classList[2];
+        let divClass7 =  (gameBoard.squaresClass[6]).classList[2];
+        let divClass8 =  (gameBoard.squaresClass[7]).classList[2];
+        let divClass9 =  (gameBoard.squaresClass[8]).classList[2];
+        let boardClassesArray = [[divClass1,divClass2,divClass3],
+                                 [divClass4,divClass5,divClass6],
+                                 [divClass7,divClass8,divClass9]]
+/*
+        for(i=0; i<=2; i ++){
+            
+            if(boardClassesArray[0][0]=='selectedX' || boardClassesArray[0][0]=='selectedO'){
+                if(boardClassesArray[i][0]==boardClassesArray[i][1] && boardClassesArray[i][1]==boardClassesArray[i][2]){
+                    winner = boardClassesArray[i][0];
+                    thereIsVictory = 'Yes';
+                    if(boardClassesArray[i][0]=='selectedX'){
+                        (gameBoard.squaresClass[0]).classList.add('winnerX');
+                        (gameBoard.squaresClass[1]).classList.add('winnerX');
+                        (gameBoard.squaresClass[2]).classList.add('winnerX');
+                    } else{
+                        (gameBoard.squaresClass[3]).classList.add('winnerO');
+                        (gameBoard.squaresClass[4]).classList.add('winnerO');
+                        (gameBoard.squaresClass[5]).classList.add('winnerO');
+                    }
+                    break;
+                }
+            }
+            
+        }*/
+        winner = null;
+
+        if(divClass1 == 'selectedX' && divClass2 == 'selectedX' && divClass3 == 'selectedX'){
+            winner = 'winnerX';
+
+        };
+        if(divClass4 == 'selectedX' && divClass5 == 'selectedX' && divClass6 == 'selectedX'){
+            winner = 'winnerX';
+        }
+        if(divClass7 == 'selectedX' && divClass8 == 'selectedX' && divClass9 == 'selectedX'){
+            winner = 'winnerX';
+        }
+        if(divClass1 == 'selectedX' && divClass4 == 'selectedX' && divClass7 == 'selectedX'){
+            winner = 'winnerX';
+        }
+        if(divClass2 == 'selectedX' && divClass5 == 'selectedX' && divClass8 == 'selectedX'){
+            winner = 'winnerX';
+        }
+        if(divClass3 == 'selectedX' && divClass6 == 'selectedX' && divClass9 == 'selectedX'){
+            winner = 'winnerX';
+        }
+        if(divClass1 == 'selectedX' && divClass5 == 'selectedX' && divClass9 == 'selectedX'){
+            winner = 'winnerX';
+        }
+        if(divClass3 == 'selectedX' && divClass5 == 'selectedX' && divClass7 == 'selectedX'){
+            winner = 'winnerX';
+        }
+        
+        if(divClass1 == 'selectedO' && divClass2 == 'selectedO' && divClass3 == 'selectedO'){
+            winner = 'winnerO';
+
+        };
+        if(divClass4 == 'selectedO' && divClass5 == 'selectedO' && divClass6 == 'selectedO'){
+            winner = 'winnerO';
+        }
+        if(divClass7 == 'selectedO' && divClass8 == 'selectedO' && divClass9 == 'selectedO'){
+            winner = 'winnerO';
+        }
+        if(divClass1 == 'selectedO' && divClass4 == 'selectedO' && divClass7 == 'selectedO'){
+            winner = 'winnerO';
+        }
+        if(divClass2 == 'selectedO' && divClass5 == 'selectedO' && divClass8 == 'selectedO'){
+            winner = 'winnerO';
+        }
+        if(divClass3 == 'selectedO' && divClass6 == 'selectedO' && divClass9 == 'selectedO'){
+            winner = 'winnerO';
+        }
+        if(divClass1 == 'selectedO' && divClass5 == 'selectedO' && divClass9 == 'selectedO'){
+            winner = 'winnerO';
+        }
+        if(divClass3 == 'selectedO' && divClass5 == 'selectedO' && divClass7 == 'selectedO'){
+            winner = 'winnerO';
+        }
+        
+            /*Guardar espacios disponibles*/
+            let availableSquare = [];
+            gameBoard.squaresClass.forEach(square => {
+                if(square.classList.length < 3){
+                    availableSquare.push(square);
+                }
+            })
+    
+            /*Definir empate si no hay espacios ni ganador para minimax AI*/
+            if(availableSquare.length == 0 && winner==null){
+                winner = 'tie';
+            }
+            return winner;
+        }
+    return {playerToPlay, victory, assignWinner, Draw, reset, ai,assignWinnerAI, victoryAI};
 };
 
+/*--------------------------  Event Listeners ----------------------*/
+const startButton = document.querySelector('.start');
+startButton.addEventListener('click', startGame);
+
+let resetButton = document.querySelector('.restart');
+resetButton.addEventListener('click', ()=> {
+    gameBoard.reset();
+    Game.reset();
+    player1.reset();
+    player2.reset();
+})
+
+const closeButton = document.querySelector('.close');
+closeButton.addEventListener('click', (e)=> {
+    let popUp = document.querySelector('.popUpWinner');
+    popUp.classList.remove('popUpWinner_open');
+})
+
+let newGameButton = document.querySelector('.newGame');
+newGameButton.addEventListener('click', ()=>{
+    gameBoard.reset();
+    Game.reset();
+    let popUp = document.querySelector('.popUpWinner');
+    popUp.classList.remove('popUpWinner_open');
+    player1.resetAI();
+    player2.resetAI();
+})
+
+let Form = document.querySelector('.form');
+Form.addEventListener('submit', createPlayers);
 
